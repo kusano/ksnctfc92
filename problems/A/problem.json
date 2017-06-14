@@ -1,0 +1,16 @@
+{
+    "title": "Problem A",
+    "statement": [
+        "aaaaaaaa",
+        "<ol>",
+        "<li>1+1=</li>",
+        "<li>Answer to the Ultimate Question of Life, The Universe, and Everything</li>",
+        "</ol>"
+    ],
+    "files": [
+    ],
+    "flags": [
+        "FLAG_A_2",
+        "FLAG_A_42"
+    ]
+}

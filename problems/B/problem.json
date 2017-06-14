@@ -1,0 +1,12 @@
+{
+    "title": "Problem B",
+    "statement": [
+        "FLAG_B_{md5(<a href=\"hoge.txt\">hoge.txt</a>)}"
+    ],
+    "files": [
+        "hoge.txt"
+    ],
+    "flags": [
+        "FLAG_B_86e925304898b22eca9a1bf1365b6a0b"
+    ]
+}
