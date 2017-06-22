@@ -8,6 +8,26 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var config = require('./config.json');
+var session = require('express-session');
+var passport = require('passport');
+var Strategy = require('passport-twitter').Strategy;
+
+passport.use(new Strategy({
+    consumerKey: config.TWITTER_CONSUMER_KEY,
+    consumerSecret: config.TWITTER_CONSUMER_SECRET,
+    callbackURL: config.URL + '/twitter/callback',
+  },
+  function (token, tokenSecret, profile, cb) {
+    cb(null, profile);
+  }));
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
 
 var problems = {};
 try
@@ -43,6 +63,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: config.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', function(req, res, next) {
   res.render('index', {
@@ -60,6 +87,14 @@ app.get('/problems/:id', function(req, res, next) {
     next();
   }
 });
+
+app.get('/twitter/login',
+  passport.authenticate('twitter'));
+app.get('/twitter/callback',
+  passport.authenticate('twitter', {failureRedirect: '/'}),
+  function(req, res, next) {
+    res.redirect('/');
+  });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
