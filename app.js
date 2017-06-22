@@ -7,6 +7,7 @@ var logger = log4js.getLogger();
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
+var config = require('./config.json');
 
 var problems = {};
 try
