@@ -6,6 +6,27 @@ var log4js = require('log4js');
 var logger = log4js.getLogger();
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
+
+var problems = {};
+try
+{
+  var index = JSON.parse(fs.readFileSync('./problems/index.json'));
+  for (var i=0; i<index.length; i++)
+  {
+    var id = index[i];
+    var problem = JSON.parse(fs.readFileSync('./problems/'+id+'/problem.json'));
+    problems[id] = problem;
+  }
+  logger.info('Loaded problems');
+  for (var id in problems)
+    logger.info('  '+id+': '+problems[id].title);
+}
+catch (e)
+{
+  logger.fatal("Failed to load problems", e.message);
+  process.exit(0);
+}
 
 var app = express();
 
