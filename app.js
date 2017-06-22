@@ -49,6 +49,16 @@ app.get('/', function(req, res, next) {
   });
 });
 
+app.get('/problems/:id', function(req, res, next) {
+  if (req.params.id in problems) {
+    res.render('problem', {
+      problem: problems[req.params.id]
+    });
+  } else {
+    next();
+  }
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
