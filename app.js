@@ -16,6 +16,7 @@ try
   {
     var id = index[i];
     var problem = JSON.parse(fs.readFileSync('./problems/'+id+'/problem.json'));
+    problem.statement = problem.statement.join('');
     problems[id] = problem;
   }
   logger.info('Loaded problems');
