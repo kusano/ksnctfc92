@@ -4,6 +4,10 @@ block content
   h1= title
   p Welcome to #{title}
 
+  - if (user != undefined) {
+    p Hi, @#{user.twitter_name}
+  - }
+
   h2 Problems
   ul
     - for (var id in problems) {

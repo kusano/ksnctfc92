@@ -98,9 +98,26 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get('*', (req, res, next) => {
+  var id = req.session.userId;
+  if (id == undefined)
+    next();
+  else
+    db.get('select * from user where id=?', id, (err, row) => {
+      if (err != null)
+        logger.warn('Failed to find user', err, id);
+      else if (row == undefined)
+        logger.warn('Invalid user id', id);
+      else
+        req.user = row;
+      next();
+    });
+});
+
 app.get('/', function(req, res, next) {
   res.render('index', {
     title: 'Express',
+    user: req.user,
     problems: problems,
   });
 });
@@ -115,13 +132,50 @@ app.get('/problems/:id', function(req, res, next) {
   }
 });
 
+//  Twitterログイン
 app.get('/twitter/login',
   passport.authenticate('twitter'));
 app.get('/twitter/callback',
   passport.authenticate('twitter', {failureRedirect: '/'}),
-  function(req, res, next) {
-    res.redirect('/');
-  });
+  (req, res, next) => {
+    var user = req.user;
+    var current = Date.now()/1000;
+    db.get('select id from user where twitter_id=?', req.user.id, (err, row) => {
+      if (err != null) {
+        logger.warn('Failed to find user', err);
+        res.redirect('/');
+      } else {
+        if (row == undefined) {
+          var id = generateRandom();
+          console.log(id);
+          db.run('insert into user values(?,?,?,?,?,?,?,?)',
+            id, user.id, user.username, user.photos[0].value, 0, true, current, current,
+            (err) => {
+              if (err != null)
+                logger.warn('Failed to add user', err, id, user);
+              else {
+                logger.info('Created user', id, user.id, user.username);
+                req.session.userId = id;
+              }
+              res.redirect('/');
+            });
+        } else {
+          var id = row.id;
+          db.run('update user set twitter_name=?, twitter_icon=?, updated_at=? where id=?',
+            user.username, user.photos[0].value, current, id,
+            (err) => {
+              if (err != null)
+                logger.warn('Failed to update user', err, id, user);
+              else {
+                logger.info('User logined', id, user.id, user.username);
+                req.session.userId = id;
+              }
+              res.redirect('/');
+            });
+        }
+      }
+    });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
