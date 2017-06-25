@@ -12,6 +12,19 @@ var session = require('express-session');
 var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
 var sqlite3 = require('sqlite3');
+var crypto = require('crypto');
+
+function generateRandom() {
+  var n = 16;
+  var random;
+  try {
+    random = crypto.randomBytes(n*3/4);
+  } catch (e) {
+    logger.fatal("no entropy", e);
+    process.exit(0);
+  }
+  return random.toString('base64');
+}
 
 //  passport
 passport.use(new Strategy({
