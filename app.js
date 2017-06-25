@@ -11,7 +11,9 @@ var config = require('./config.json');
 var session = require('express-session');
 var passport = require('passport');
 var Strategy = require('passport-twitter').Strategy;
+var sqlite3 = require('sqlite3');
 
+//  passport
 passport.use(new Strategy({
     consumerKey: config.TWITTER_CONSUMER_KEY,
     consumerSecret: config.TWITTER_CONSUMER_SECRET,
@@ -29,6 +31,7 @@ passport.deserializeUser(function(obj, cb) {
   cb(null, obj);
 });
 
+//  problem
 var problems = {};
 try
 {
@@ -46,9 +49,20 @@ try
 }
 catch (e)
 {
-  logger.fatal("Failed to load problems", e.message);
+  logger.fatal('Failed to load problems', e.message);
   process.exit(0);
 }
+
+//  db
+var db = new sqlite3.Database('database.db', sqlite3.OPEN_READWRITE, e => {
+  if (e === null)
+    logger.info("Opened database");
+  else
+  {
+    logger.fatal('Failed to open database');
+    process.exit(0);
+  }
+});
 
 var app = express();
 
