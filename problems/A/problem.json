@@ -10,7 +10,7 @@
     "files": [
     ],
     "flags": [
-        "FLAG_A_2",
-        "FLAG_A_42"
+        ["FLAG_A_2"],
+        ["FLAG_A_42"]
     ]
 }

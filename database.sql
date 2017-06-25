@@ -13,7 +13,7 @@ create table user(
 create table solved(
     id text references user(id),
     problem text not null,
-    flag text not null,
+    flag integer not null,
     created_at integer not null,
     primary key(id, problem, flag)
 );
