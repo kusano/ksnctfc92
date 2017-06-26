@@ -3,3 +3,10 @@ extends layout
 block content
   h1= problem.title
   p!= problem.statement
+  form#form
+    span flag:
+    input#problem(type="hidden", value="#{problem.id}")
+    input#flag
+    input(type="submit", value="投稿")
+    // TODO: CSRF
+  script(src="/javascripts/problem.js")

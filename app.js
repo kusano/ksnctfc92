@@ -53,6 +53,7 @@ try
   {
     var id = index[i];
     var problem = JSON.parse(fs.readFileSync('./problems/'+id+'/problem.json'));
+    problem.id = id;
     problem.statement = problem.statement.join('');
     problems[id] = problem;
   }
