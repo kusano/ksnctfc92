@@ -212,8 +212,8 @@ app.get('/twitter/callback',
       } else {
         if (row == undefined) {
           var id = generateRandom();
-          db.run('insert into user values(?,?,?,?,?,?,?,?)',
-            id, user.id, user.username, user.photos[0].value, 0, true, current, current,
+          db.run('insert into user values(?,?,?,?,?,?,?,?,?)',
+            id, user.id, user.username, user.photos[0].value, null, 0, current, current, current,
             err => {
               if (err != null)
                 logger.warn('Failed to add user', err, id, user);
