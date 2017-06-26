@@ -136,6 +136,64 @@ app.get('/problems/:id', function(req, res, next) {
   }
 });
 
+app.post('/submit', function(req, res, next) {
+  var user = req.loginUser;
+  var userName = user != undefined ? (user.id+' '+user.twitter_name) : 'anonymous';
+  var problemId = req.body.problem;
+  var flag = req.body.flag.trim();
+
+  logger.info('Flag submitted', userName, problemId, flag);
+
+  if (problemId==undefined || flag==undefined)
+    res.status(400).send();
+  else if (!(problemId in problems))
+    res.status(404).send();
+  else {
+    var sendResult = (result) => {
+      logger.info('Flag submit result', result, userName, problemId, flag);
+      res.contentType('text/plain');
+      res.send(result);
+    };
+
+    var problem = problems[problemId];
+    var flagId = '';
+    for (var i=0; i<problem.flags.length; i++)
+      for (var j=0; j<problem.flags[i].flags.length; j++)
+        if (problem.flags[i].flags[j]==flag)
+          flagId = problem.flags[i].id;
+    var result = '';
+
+    if (flagId=='')
+      sendResult('wrong');
+    else if (user==undefined)
+      sendResult('correct');
+    else {
+      db.get('select 1 from solved where user=? and problem=? and flag=?',
+        user.id, problemId, flagId,
+        (err, row) => {
+          if (err != null) {
+            logger.warn('Faild to find solved', err);
+            res.status(500).send();
+          } else if (row != undefined)
+            sendResult('duplicate');
+          else {
+            db.run('insert into solved values(?,?,?,?)',
+              user.id, problemId, flagId, Date.now()/1000,
+              err => {
+                if (err != null) {
+                  logger.warn('Faild to insert solved', err);
+                  res.status(500).send();
+                } else {
+                  logger.info('Inserted into solved', userName, problemId, flagId);
+                  sendResult('correct');
+                }
+              });
+          }
+        });
+    }
+  }
+});
+
 //  Twitterログイン
 app.get('/twitter/login',
   passport.authenticate('twitter'));
