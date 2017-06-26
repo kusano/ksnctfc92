@@ -99,7 +99,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('*', (req, res, next) => {
+function getUser(req, res, next)
+{
   var id = req.session.userId;
   if (id == undefined)
     next();
@@ -110,15 +111,17 @@ app.get('*', (req, res, next) => {
       else if (row == undefined)
         logger.warn('Invalid user id', id);
       else
-        req.user = row;
+        req.loginUser = row;
       next();
     });
-});
+}
+app.get('*', getUser);
+app.post('*', getUser);
 
 app.get('/', function(req, res, next) {
   res.render('index', {
     title: 'Express',
-    user: req.user,
+    user: req.loginUser,
     problems: problems,
   });
 });
@@ -140,18 +143,20 @@ app.get('/twitter/callback',
   passport.authenticate('twitter', {failureRedirect: '/'}),
   (req, res, next) => {
     var user = req.user;
+    //  自前で管理するのでpassportのユーザー情報は破棄
+    req.user = {};
+
     var current = Date.now()/1000;
-    db.get('select id from user where twitter_id=?', req.user.id, (err, row) => {
+    db.get('select id from user where twitter_id=?', user.id, (err, row) => {
       if (err != null) {
         logger.warn('Failed to find user', err);
         res.redirect('/');
       } else {
         if (row == undefined) {
           var id = generateRandom();
-          console.log(id);
           db.run('insert into user values(?,?,?,?,?,?,?,?)',
             id, user.id, user.username, user.photos[0].value, 0, true, current, current,
-            (err) => {
+            err => {
               if (err != null)
                 logger.warn('Failed to add user', err, id, user);
               else {
@@ -164,7 +169,7 @@ app.get('/twitter/callback',
           var id = row.id;
           db.run('update user set twitter_name=?, twitter_icon=?, updated_at=? where id=?',
             user.username, user.photos[0].value, current, id,
-            (err) => {
+            err => {
               if (err != null)
                 logger.warn('Failed to update user', err, id, user);
               else {
