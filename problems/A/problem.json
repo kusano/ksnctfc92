@@ -10,7 +10,15 @@
     "files": [
     ],
     "flags": [
-        ["FLAG_A_2"],
-        ["FLAG_A_42"]
+        {
+            "id": "easy",
+            "flags": ["FLAG_A_2", "FLAG_A_10"],
+            "point": 10
+        },
+        {
+            "id": "medium",
+            "flags": ["FLAG_A_42"],
+            "point": 42
+        }
     ]
 }

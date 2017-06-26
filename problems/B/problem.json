@@ -7,6 +7,12 @@
         "hoge.txt"
     ],
     "flags": [
-        ["FLAG_B_86e925304898b22eca9a1bf1365b6a0b"]
+        {
+            "id": "1",
+            "flags": [
+                "FLAG_B_86e925304898b22eca9a1bf1365b6a0b"
+            ],
+            "point": 100
+        }
     ]
 }
