@@ -30,7 +30,7 @@ function generateRandom() {
 passport.use(new Strategy({
     consumerKey: config.TWITTER_CONSUMER_KEY,
     consumerSecret: config.TWITTER_CONSUMER_SECRET,
-    callbackURL: config.URL + '/twitter/callback',
+    callbackURL: config.URL + '/callback',
   },
   function (token, tokenSecret, profile, cb) {
     cb(null, profile);
@@ -263,9 +263,9 @@ app.post('/submit', (req, res) => {
 });
 
 //  Twitterログイン
-app.get('/twitter/login',
+app.get('/login',
   passport.authenticate('twitter'));
-app.get('/twitter/callback',
+app.get('/callback',
   passport.authenticate('twitter', {failureRedirect: '/'}),
   (req, res, next) => {
     var user = req.user;
