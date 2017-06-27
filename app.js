@@ -185,6 +185,16 @@ app.get('/problems/:id', (req, res, next) => {
     next();
 });
 
+app.get('/problems/:id/:file', (req, res, next) => {
+  var id = req.params.id;
+  var file = req.params.file;
+  if (id in problems &&
+      (file == 'cover.png' || problems[id].files.indexOf(file)>=0))
+    res.sendFile(id+'/'+file, {root: problemDir});
+  else
+    next();
+});
+
 app.post('/submit', (req, res) => {
   var user = req.loginUser;
   var userName = user != undefined ? (user.id+' '+user.twitter_name) : 'anonymous';
