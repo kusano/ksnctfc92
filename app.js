@@ -176,7 +176,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/problems/:id', (req, res, next) => {
+app.get('/problems/:id/', (req, res, next) => {
   if (req.params.id in problems) {
     res.render('problem', {
       problem: problems[req.params.id]
