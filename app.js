@@ -234,7 +234,16 @@ app.post('/submit', function(req, res, next) {
                   res.status(500).send();
                 } else {
                   logger.info('Inserted into solved', userName, problemId, flagId);
-                  sendResult('correct');
+                  updateScore(user.id, err => {
+                    if (err != null) {
+                      logger.warn('Failed to update score',
+                        userName, problemId, FlagId, err);
+                      res.status(500).send();
+                    } else {
+                      logger.info('Score updated', userName, problemId, flagId);
+                      sendResult('correct');
+                    }
+                  });
                 }
               });
           }
