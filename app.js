@@ -45,14 +45,15 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 //  problem
+var problemDir = './problems/';
 var problems = {};
 try
 {
-  var index = JSON.parse(fs.readFileSync('./problems/index.json'));
+  var index = JSON.parse(fs.readFileSync(problemDir+'index.json'));
   for (var i=0; i<index.length; i++)
   {
     var id = index[i];
-    var problem = JSON.parse(fs.readFileSync('./problems/'+id+'/problem.json'));
+    var problem = JSON.parse(fs.readFileSync(problemDir+id+'/problem.json'));
     problem.id = id;
     problem.statement = problem.statement.join('');
     problems[id] = problem;
@@ -167,7 +168,7 @@ function getUser(req, res, next)
 app.get('*', getUser);
 app.post('*', getUser);
 
-app.get('/', function(req, res, next) {
+app.get('/', (req, res) => {
   res.render('index', {
     title: 'Express',
     user: req.loginUser,
@@ -175,17 +176,16 @@ app.get('/', function(req, res, next) {
   });
 });
 
-app.get('/problems/:id', function(req, res, next) {
+app.get('/problems/:id', (req, res, next) => {
   if (req.params.id in problems) {
     res.render('problem', {
       problem: problems[req.params.id]
     });
-  } else {
+  } else
     next();
-  }
 });
 
-app.post('/submit', function(req, res, next) {
+app.post('/submit', (req, res) => {
   var user = req.loginUser;
   var userName = user != undefined ? (user.id+' '+user.twitter_name) : 'anonymous';
   var problemId = req.body.problem;
@@ -300,14 +300,14 @@ app.get('/twitter/callback',
 });
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
