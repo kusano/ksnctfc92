@@ -11,6 +11,13 @@ create table user(
     primary key (id)
 );
 
+create table problem(
+    problem text,
+    flag text,
+    point int not null,
+    primary key(problem, flag)
+);
+
 create table solved(
     user text references user(id),
     problem text not null,

@@ -70,12 +70,61 @@ catch (e)
 //  db
 var db = new sqlite3.Database('database.db', sqlite3.OPEN_READWRITE, e => {
   if (e === null)
-    logger.info("Opened database");
+    logger.info("Database opend");
   else
   {
     logger.fatal('Failed to open database');
     process.exit(0);
   }
+});
+
+//  スコアの更新
+function updateScore(user, callback)
+{
+  db.run('update user set ' +
+    'score = (select sum(point) from problem, solved where ' +
+      'solved.user = ? and ' +
+      'problem.problem = solved.problem and ' +
+      'problem.flag = solved.flag), '+
+    'score_updated = (select max(created_at) from solved where user = ?);',
+    user, user, callback);
+}
+
+db.serialize(() => {
+  db.run('delete from problem', err => {
+    if (err != null) {
+      logger.fatal('Failed to delete problem', err);
+      process.exit(0);
+    }
+  });
+  db.parallelize(() => {
+    for (var problemId in problems) {
+      var problem = problems[problemId];
+      for (var i=0; i<problem.flags.length; i++) {
+        db.run('insert into problem values(?,?,?)',
+          problemId, problem.flags[i].id, problem.flags[i].point,
+          err => {
+            if (err != null) {
+              logger.fatal('Failed to insert problem', err);
+              process.exit(0);
+            }
+          });
+      }
+    }
+  });
+  db.each('select id from user', (err, row) => {
+    if (err != null) {
+      logger.fatal('Failed to find user', err);
+      process.exit(0);
+    }
+    updateScore(row.id, err => {
+      if (err != null) {
+        logger.fatal('Failed to update user score', err);
+        process.exit(0);
+      }
+    });
+  });
+  logger.info('Score udpated');
 });
 
 var app = express();
