@@ -3,14 +3,23 @@ html
   head
     block title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
   body
     nav.nav.has-shadow
       .container
         .nav-left
-          a.nav-item.is-tab(href='/') ksnctf C92
-          a.nav-item.is-tab(href='/problems/') 問題
-          a.nav-item.is-tab(href='/ranking/') ランキング
-          a.nav-item.is-tab(href='/log') ログ
+          a.nav-item.is-tab(href='/')
+            span.icon: i.fa.fa-home
+            | ksnctf C92
+          a.nav-item.is-tab(href='/problems/')
+            span.icon: i.fa.fa-puzzle-piece
+            | 問題
+          a.nav-item.is-tab(href='/ranking/')
+            span.icon: i.fa.fa-bar-chart
+            | ランキング
+          a.nav-item.is-tab(href='/log')
+            span.icon: i.fa.fa-file-text-o
+            | ログ
     section.hero.is-primary
       .hero-body
         .container
@@ -23,6 +32,7 @@ html
       .container
         .content.has-text-centered
           p
+            | Twitter:&nbsp;
             a(href='https://twitter.com/ksnctf') @ksnctf
             span &nbsp;
             a(href='https://twitter.com/hashtag/ksnctfC92') #ksnctfC92
