@@ -20,6 +20,22 @@ html
           a.nav-item.is-tab(href='/log')
             span.icon: i.fa.fa-file-text-o
             | ログ
+        .nav-right
+          - if (user == undefined) {
+            .nav-item
+              a.button(href='/login', style='color: #55acee')
+                span.icon: i.fa.fa-twitter
+                span ログイン
+          - } else {
+            .nav-item
+              a(href='#{"https://twitter.com/"+user.twitter_name}', title='#{"@"+user.twitter_name}')
+                img.image(src=user.twitter_icon)
+              | &nbsp;
+              strong= user.score + " pt"
+            .nav-item
+              a.button(href='/logout')
+                span.icon: i.fa.fa-sign-out
+          - }
     section.hero.is-primary
       .hero-body
         .container
