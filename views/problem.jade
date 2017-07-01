@@ -5,15 +5,22 @@ block title
 
 block hero
   h1.title 問題
-  h2.subtitle &nbsp;
+  h2.subtitle 各問題から<code>FLAG{????}</code>という形式のフラグを探してください
 
 block content
   h1= problem.title
   p!= problem.statement
+
   form#form
-    span flag:
     input#problem(type="hidden", value="#{problem.id}")
-    input#flag
     input#_csrf(type='hidden', value='#{csrfToken}')
-    input(type="submit", value="投稿")
-  script(src="/javascripts/problem.js")
+    .field
+      label.label(for='flag') フラグ
+      .control.has-icons-left
+        span.icon.is-left
+          i.fa.fa-flag
+        input.input#flag
+    .field
+      .control
+        button.button.is-primary(type='submit') 投稿
+  script(src='/javascripts/problem.js')
