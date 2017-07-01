@@ -23,9 +23,10 @@ html
         .nav-right
           - if (user == undefined) {
             .nav-item
-              a.button(href='/login', style='color: #55acee')
-                span.icon: i.fa.fa-twitter
-                span ログイン
+              form(method='post', action='/login')
+                button.button(type='submit', style='color: #55acee')
+                  span.icon: i.fa.fa-twitter
+                  span ログイン
           - } else {
             .nav-item
               a(href='#{"https://twitter.com/"+user.twitter_name}', title='#{"@"+user.twitter_name}')

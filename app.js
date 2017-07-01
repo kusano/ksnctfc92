@@ -270,7 +270,7 @@ app.post('/submit', (req, res) => {
 });
 
 //  Twitterログイン
-app.get('/login',
+app.post('/login',
   passport.authenticate('twitter'));
 
 app.get('/callback',
