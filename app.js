@@ -14,6 +14,7 @@ var Strategy = require('passport-twitter').Strategy;
 var sqlite3 = require('sqlite3');
 var crypto = require('crypto');
 var sassMiddleware = require('node-sass-middleware');
+var csurf = require('csurf')
 
 function generateRandom() {
   var n = 16;
@@ -155,6 +156,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(csurf());
 
 function getUser(req, res, next)
 {
@@ -177,8 +179,8 @@ app.post('*', getUser);
 
 app.get('/', (req, res) => {
   res.render('index', {
-    title: 'Express',
     user: req.loginUser,
+    csrfToken: req.csrfToken(),
     problems: problems,
   });
 });
@@ -186,6 +188,7 @@ app.get('/', (req, res) => {
 app.get('/problems/:id/', (req, res, next) => {
   if (req.params.id in problems) {
     res.render('problem', {
+      csrfToken: req.csrfToken(),
       problem: problems[req.params.id]
     });
   } else

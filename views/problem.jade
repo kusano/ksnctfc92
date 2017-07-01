@@ -14,6 +14,6 @@ block content
     span flag:
     input#problem(type="hidden", value="#{problem.id}")
     input#flag
+    input#_csrf(type='hidden', value='#{csrfToken}')
     input(type="submit", value="投稿")
-    // TODO: CSRF
   script(src="/javascripts/problem.js")

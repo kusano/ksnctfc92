@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     xhr.send(JSON.stringify({
       problem: document.getElementById('problem').value,
       flag: document.getElementById('flag').value,
+      _csrf: document.getElementById('_csrf').value,
     }));
   });
 });
