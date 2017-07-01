@@ -1,7 +1,31 @@
 doctype html
 html
   head
-    title= title
+    block title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    nav.nav.has-shadow
+      .container
+        .nav-left
+          a.nav-item.is-tab(href='/') ksnctf C92
+          a.nav-item.is-tab(href='/problems/') 問題
+          a.nav-item.is-tab(href='/ranking/') ランキング
+          a.nav-item.is-tab(href='/log') ログ
+    section.hero.is-primary
+      .hero-body
+        .container
+          block hero
+    section.section
+      .container
+        .content
+          block content
+    footer.footer
+      .container
+        .content.has-text-centered
+          p
+            a(href='https://twitter.com/ksnctf') @ksnctf
+            span &nbsp;
+            a(href='https://twitter.com/hashtag/ksnctfC92') #ksnctfC92
+          p
+            | ksnctf C92 by&nbsp;
+            a(href='https://twitter.com/kusano_k') @kusano_k

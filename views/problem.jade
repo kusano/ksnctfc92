@@ -1,5 +1,12 @@
 extends layout
 
+block title
+  title ksnctf C92 - #{problem.title}
+
+block hero
+  h1.title 問題
+  h2.subtitle &nbsp;
+
 block content
   h1= problem.title
   p!= problem.statement
