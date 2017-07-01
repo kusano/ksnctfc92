@@ -188,6 +188,7 @@ app.get('/', (req, res) => {
 app.get('/problems/:id/', (req, res, next) => {
   if (req.params.id in problems) {
     res.render('problem', {
+      user: req.loginUser,
       csrfToken: req.csrfToken(),
       problem: problems[req.params.id]
     });
