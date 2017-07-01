@@ -272,6 +272,7 @@ app.post('/submit', (req, res) => {
 //  Twitterログイン
 app.get('/login',
   passport.authenticate('twitter'));
+
 app.get('/callback',
   passport.authenticate('twitter', {failureRedirect: '/'}),
   (req, res, next) => {
@@ -314,6 +315,13 @@ app.get('/callback',
         }
       }
     });
+});
+
+app.post('/logout', (req, res) => {
+  var user = req.loginUser;
+  logger.info('User logouted', user.id, user.twitter_name);
+  req.session.destroy();
+  res.redirect('/');
 });
 
 // catch 404 and forward to error handler

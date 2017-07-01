@@ -33,8 +33,9 @@ html
               | &nbsp;
               strong= user.score + " pt"
             .nav-item
-              a.button(href='/logout')
-                span.icon: i.fa.fa-sign-out
+              form(method='post', action='/logout')
+                button.button(type='submit')
+                  span.icon: i.fa.fa-sign-out
           - }
     section.hero.is-primary
       .hero-body
