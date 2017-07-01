@@ -181,6 +181,13 @@ app.get('/', (req, res) => {
   res.render('index', {
     user: req.loginUser,
     csrfToken: req.csrfToken(),
+  });
+});
+
+app.get('/problems/', (req, res) => {
+  res.render('problems', {
+    user: req.loginUser,
+    csrfToken: req.csrfToken(),
     problems: problems,
   });
 });
