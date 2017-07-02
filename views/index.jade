@@ -8,13 +8,21 @@ block hero
   h2.subtitle Welcome to ksnctf C92
 
 block content
-  p
-    | <a href="http://ksnctf.sweetduet.info/">ksnctf</a>のコミックマーケットC92向けスピンオフです。
-    | 主にITセキュリティーに関する問題を出題します。
-    | 各問題から<code>FLAG{????}</code>という形式のフラグを探してください。
-    | Twitterアカウントでログインすることで、ランキングに参加でき、さらに……。
-    | 解説本を<strong>金曜日 東地区“た”ブロック－26b「superflip」</strong>で頒布します。
-
+  .columns
+    .column
+      p
+      | <a href="http://ksnctf.sweetduet.info/">ksnctf</a>のコミックマーケットC92向けスピンオフです。
+      | 主にITセキュリティーに関する問題を出題します。
+      | 各問題から<code>FLAG{????}</code>という形式のフラグを探してください。
+      | Twitterアカウントでログインすることで、ランキングに参加でき、さらに……。
+      | 解説本を<strong>金曜日 東地区“た”ブロック－26b「superflip」</strong>で頒布します。
+    .column.is-3
+      figure.image(style='border: 2px solid #f8f8fa; box-shadow: 1px 2px 2px #889')
+        - if (user && user.hidden) {
+          img(src='/images/bigsight_hidden.jpg')
+        - } else {
+          img(src='/images/bigsight.jpg')
+        - }
   h2 開催期間
   p 2017年7月11日 ～ 2017年8月11日 10時00分（日本時間）
   h2 注意事項
