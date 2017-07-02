@@ -19,7 +19,7 @@ block content
           - if (user != undefined) {
           -   comp = true;
           -   for (var f of problems[id].flags) {
-          -     if (!solved[i] || !solved[id][f.id]) comp = false;
+          -     if (!solved[id] || !solved[id][f.id]) comp = false;
           -   }
           - }
           a.panel-block(class=(id==problem.id ? "is-active" : ""), href='../'+id+'/')
