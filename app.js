@@ -90,8 +90,9 @@ function updateScore(user, callback)
       'solved.user = ? and ' +
       'problem.problem = solved.problem and ' +
       'problem.flag = solved.flag), '+
-    'score_updated = (select max(created_at) from solved where user = ?);',
-    user, user, callback);
+    'score_updated = (select max(created_at) from solved where user = ?) ' +
+    'where id = ?',
+    user, user, user, callback);
 }
 
 db.serialize(() => {
