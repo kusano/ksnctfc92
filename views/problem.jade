@@ -19,6 +19,7 @@ block content
           - if (user != undefined) {
           -   comp = true;
           -   for (var f of problems[id].flags) {
+          -     if (f.hidden && !(user && user.hidden)) continue;
           -     if (!solved[id] || !solved[id][f.id]) comp = false;
           -   }
           - }
@@ -38,12 +39,17 @@ block content
             .column.is-narrow
               img(src='cover.png', style='width: 128px; height: 128px')
             .column
-              != problem.statement
+              p!= problem.statement
+              - if (user && user.hidden) {
+                p.hidden!= problem.statement_hidden
+              - }
           .field
             label.label 点数
             - var sep = '';
             - for (var flag of problem.flags) {
-              span= sep + flag.point
+              - if (flag.hidden && !(user && user.hidden)) continue;
+              span= sep
+              span(class=flag.hidden ? 'hidden' : '')= flag.point
               - sep = ' / ';
               - if (solved[problem.id] && solved[problem.id][flag.id]) {
                 | &nbsp;
