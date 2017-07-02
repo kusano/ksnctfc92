@@ -61,5 +61,32 @@ block content
                 input.input#flag
             .field
               .control
-                button.button.is-primary(type='submit') 投稿
+                button#submit.button.is-primary(type='submit') 投稿
+  #modal.modal
+    #modal-background.modal-background
+    .modal-card
+      header.modal-card-head
+        .correct.modal-card-title
+          span.icon.is-success: i.fa.fa-check
+          | 正解！
+        .wrong.modal-card-title
+          span.icon.is-danger: i.fa.fa-close
+          | 不正解
+        .duplicate.modal-card-title
+          span.icon.is-success: i.fa.fa-check
+          | 正解
+      section.modal-card-body
+        .columns
+          .column.is-narrow
+            img(src='cover.png', style='width: 128px; height: 128px')
+          .column
+            p.correct
+              strong#point
+              | ポイントを獲得しました
+            p.wrong 不正解です
+            p.duplicate すでにポイントを獲得済みのフラグです
+            p
+              code#flag_modal
+      footer.modal-card-foot
+        a#modal-ok.button.is-primary OK
   script(src='/javascripts/problem.js')

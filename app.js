@@ -293,24 +293,29 @@ app.post('/submit', (req, res) => {
   else if (!(problemId in problems))
     res.status(404).send();
   else {
-    var sendResult = (result) => {
+    var sendResult = (result, point) => {
       logger.info('Flag submit result', result, userName, problemId, flag);
-      res.contentType('text/plain');
-      res.send(result);
+      res.contentType('application/json');
+      res.send({
+        result: result,
+        point: point,
+      });
     };
 
     var problem = problems[problemId];
     var flagId = '';
     for (var i=0; i<problem.flags.length; i++)
       for (var j=0; j<problem.flags[i].flags.length; j++)
-        if (problem.flags[i].flags[j]==flag)
+        if (problem.flags[i].flags[j]==flag) {
           flagId = problem.flags[i].id;
+          point = problem.flags[i].point;
+        }
     var result = '';
 
     if (flagId=='')
-      sendResult('wrong');
+      sendResult('wrong', 0);
     else if (user==undefined)
-      sendResult('correct');
+      sendResult('correct', point);
     else {
       db.get('select 1 from solved where user=? and problem=? and flag=?',
         user.id, problemId, flagId,
@@ -319,7 +324,7 @@ app.post('/submit', (req, res) => {
             logger.warn('Faild to find solved', err);
             res.status(500).send();
           } else if (row != undefined)
-            sendResult('duplicate');
+            sendResult('duplicate', 0);
           else {
             db.run('insert into solved values(?,?,?,?)',
               user.id, problemId, flagId, Date.now()/1000,
@@ -336,7 +341,8 @@ app.post('/submit', (req, res) => {
                       res.status(500).send();
                     } else {
                       logger.info('Score updated', userName, problemId, flagId);
-                      sendResult('correct');
+                      console.log(problem.flags, flagId);
+                      sendResult('correct', point);
                     }
                   });
                 }
