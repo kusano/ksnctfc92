@@ -2,7 +2,11 @@ doctype html
 html
   head
     block title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    - if (user && user.hidden) {
+      link(rel='stylesheet', href='/stylesheets/style_hidden.css')
+    - } else {
+      link(rel='stylesheet', href='/stylesheets/style.css')
+    - }
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
   body
     nav.nav.has-shadow
@@ -34,9 +38,16 @@ html
                 img.image(src=user.twitter_icon)
               | &nbsp;
               strong= user.score + " pt"
+            - if (user.enableHidden) {
+              .nav-item
+                form(method='post', action='/hidden')
+                  button.button(type='submit', title='隠しフラグの表示を切り替える')
+                    span.icon: i.fa.fa-question
+                  input(type='hidden', name='_csrf', value='#{csrfToken}')
+            - }
             .nav-item
               form(method='post', action='/logout')
-                button.button(type='submit')
+                button.button(type='submit', title='ログアウト')
                   span.icon: i.fa.fa-sign-out
                 input(type='hidden', name='_csrf', value='#{csrfToken}')
           - }

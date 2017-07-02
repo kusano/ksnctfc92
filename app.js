@@ -50,6 +50,7 @@ passport.deserializeUser(function(obj, cb) {
 //  problem
 var problemDir = './problems/';
 var problems = {};
+var scoreThreshold = 0;   //  隠しフラグ以外を全て取ったときのスコア
 try
 {
   var index = JSON.parse(fs.readFileSync(problemDir+'index.json'));
@@ -60,6 +61,10 @@ try
     problem.id = id;
     problem.statement = problem.statement.join('');
     problems[id] = problem;
+
+    for (var flag of problem.flags)
+      if (!flag.hidden)
+        scoreThreshold += flag.point;
   }
   logger.info('Loaded problems');
   for (var id in problems)
@@ -175,8 +180,14 @@ function getUser(req, res, next)
         logger.warn('Failed to find user', err, id);
       else if (row == undefined)
         logger.warn('Invalid user id', id);
-      else
+      else {
         req.loginUser = row;
+        req.loginUser.enableHidden = req.loginUser.score >= scoreThreshold;
+        if (req.session.hidden == undefined)
+          req.loginUser.hidden = req.loginUser.enableHidden;
+        else
+          req.loginUser.hidden = req.session.hidden
+      }
       next();
     });
 }
@@ -399,6 +410,12 @@ app.get('/log/', (req, res) => {
       solved: solved,
     });
   });
+});
+
+app.post('/hidden', (req, res) => {
+  if (req.loginUser.enableHidden)
+    req.session.hidden = !req.session.hidden;
+  res.redirect('/');
 });
 
 //  Twitterログイン
