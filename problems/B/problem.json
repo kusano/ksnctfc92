@@ -3,6 +3,9 @@
     "statement": [
         "FLAG_B_{md5(<a href=\"hoge.txt\">hoge.txt</a>)}"
     ],
+    "statement_hidden": [
+        "FLAG_B_{sha1sum(<a href=\"hoge.txt\">hoge.txt</a>)}"
+    ],
     "files": [
         "hoge.txt"
     ],
@@ -12,7 +15,15 @@
             "flags": [
                 "FLAG_B_86e925304898b22eca9a1bf1365b6a0b"
             ],
-            "point": 100
+            "point": 100,
+            "hidden": false
+        }, {
+            "id": "2",
+            "flags": [
+                "FLAG_B_34a324c04fb3db89f5dbb8f753440340ea5c3bdc"
+            ],
+            "point": 123,
+            "hidden": true
         }
     ]
 }

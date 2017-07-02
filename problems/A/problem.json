@@ -7,18 +7,27 @@
         "<li>Answer to the Ultimate Question of Life, The Universe, and Everything</li>",
         "</ol>"
     ],
+    "statement_hidden": [
+        "1 more flag!"
+    ],
     "files": [
     ],
     "flags": [
         {
             "id": "easy",
             "flags": ["FLAG_A_2", "FLAG_A_10"],
-            "point": 10
-        },
-        {
+            "point": 10,
+            "hidden": false
+        }, {
             "id": "medium",
             "flags": ["FLAG_A_42"],
-            "point": 42
+            "point": 42,
+            "hidden": false
+        }, {
+            "id": "hard",
+            "flags": ["FLAG_A_1more"],
+            "point": 99,
+            "hidden": true
         }
     ]
 }
