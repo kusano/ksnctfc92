@@ -14,27 +14,37 @@ block content
         th(style='width: 96px')
         th(style='width: 64px') ID
         th 問題名
-        th 点数
+        th(style='width: 128px') 点数
         th 正解者
     tbody
       - for (var id in problems) {
         - var problem = problems[id];
-        tr
-          td
-            img(src='/problems/#{problem.id}/cover.png', style='width: 48px; height: 48px')
-          td= problem.id
-          td
-            a(href='/problems/#{problem.id}/')
-              = problem.title
-          td
-            - var sep = '';
-            - for (var flag of problem.flags) {
-              span= sep + flag.point
-              - sep = ' / ';
-              - if (solved[problem.id] && solved[problem.id][flag.id]) {
-                | &nbsp;
-                span.icon.is-small.is-success: i.fa.fa-check
-              - }
+        - var first = true;
+        - for (var flag of problem.flags) {
+          tr
+            - if (first) {
+              - first = false;
+              td(rowspan=problem.flags.length)
+                img(src='/problems/#{problem.id}/cover.png', style='width: 48px; height: 48px')
+              td(rowspan=problem.flags.length)= problem.id
+              td(rowspan=problem.flags.length)
+                a(href='/problems/#{problem.id}/')
+                  = problem.title
             - }
-          td
+            td.has-text-right
+              span= flag.point
+              | &nbsp;
+              span.icon.is-small.is-success
+                i.fa(class=solved[problem.id] && solved[problem.id][flag.id] ? 'fa-check' : '')
+            td
+              - var solv = solver[problem.id] && solver[problem.id][flag.id] || [];
+              - var num = number[problem.id] && number[problem.id][flag.id] || 0;
+              - for (var s of solv) {
+                a(href='https://twitter.com/'+s.twitter_name, title='@'+s.twitter_name)
+                  img(src=s.twitter_icon, style='width: 32px; height: 32px')
+              - }
+              - if (solv.length < num) {
+                span= ' +'+(num-solv.length)
+              - }
+        - }
       - }

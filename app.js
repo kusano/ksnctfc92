@@ -211,11 +211,48 @@ app.get('/problems/(:id/)?', (req, res, next) => {
 });
 
 app.get('/problems/', (req, res) => {
-  res.render('problems', {
-    user: req.loginUser,
-    csrfToken: req.csrfToken(),
-    problems: problems,
-    solved: req.solved,
+  var number = {};
+  db.all('select problem, flag, count(*) as number from solved group by problem, flag', (err, rows) => {
+    if (err != null)
+      logger.warn('Failed to get solve number', err);
+    else {
+      for (var row of rows) {
+        if (!(row.problem in number))
+          number[row.problem] = {};
+        number[row.problem][row.flag] = row.number;
+      }
+    }
+    var solver = {};
+    //  たぶん遅いのでなんとかしたい
+    var limit = 10;
+    db.all(
+      'select problem, flag, twitter_name, twitter_icon from solved as s1, user ' +
+      '  where s1.user in ' +
+      '    (select s2.user from solved as s2 ' +
+      '      where s1.problem=s2.problem and s1.flag=s2.flag ' +
+      '      order by created_at limit ?) and ' +
+      '  s1.user=user.id',
+      limit, (err, rows) => {
+        if (err != null)
+          logger.warn('Failed to get solve user', err);
+        else {
+          for (var row of rows) {
+            if (!(row.problem in solver))
+              solver[row.problem] = {};
+            if (!(row.flag in solver[row.problem]))
+              solver[row.problem][row.flag] = [];
+            solver[row.problem][row.flag].push(row);
+          }
+        }
+        res.render('problems', {
+          user: req.loginUser,
+          csrfToken: req.csrfToken(),
+          problems: problems,
+          solved: req.solved,
+          number: number,
+          solver: solver,
+        });
+      });
   });
 });
 
