@@ -304,6 +304,28 @@ app.post('/submit', (req, res) => {
   }
 });
 
+function formatDate(d) {
+  var s = new Date(d*1000).toISOString();
+  return s.replace('T', ' ').replace('Z', '');
+}
+
+app.get('/ranking/', (req, res) => {
+  db.all('select * from user order by score desc, score_updated', (err, rows) => {
+    var users = [];
+    if (err != null)
+      logger.warn('Failed to get ranking', err);
+    else
+      users = rows;
+    for (var u of users)
+      u.score_updated = formatDate(u.score_updated);
+    res.render('ranking', {
+      user: req.loginUser,
+      csrfToken: req.csrfToken(),
+      users: users,
+    });
+  });
+});
+
 //  Twitterログイン
 app.post('/login',
   passport.authenticate('twitter'));

@@ -1,0 +1,28 @@
+extends layout
+
+block title
+  title ksnctf C92 - ランキング
+
+block hero
+  h1.title ランキング
+  h2.subtitle order by 点数 desc, order by 更新日時 asc
+
+block content
+  table
+    thead
+      tr
+        th 順位
+        th 名前
+        th 点数
+        th 更新日時
+    tbody
+      tr
+        - for (var i=0; i<users.length; i++) {
+          td.has-text-right= i+1
+          td
+            a(href='https://twitter.com/'+users[i].twitter_name)
+              img(src=users[i].twitter_icon, width='32', height='32')
+              = ' @' + users[i].twitter_name
+          td.has-text-right= users[i].score
+          td= users[i].score_updated
+        - }
