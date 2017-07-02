@@ -21,7 +21,7 @@ block content
           td.has-text-right= i+1
           td
             a(href='https://twitter.com/'+users[i].twitter_name)
-              img(src=users[i].twitter_icon, width='32', height='32')
+              img(src=users[i].twitter_icon, style='width: 32px; height: 32px')
               = ' @' + users[i].twitter_name
           td.has-text-right= users[i].score
           td= users[i].score_updated

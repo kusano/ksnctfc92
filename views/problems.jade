@@ -11,7 +11,7 @@ block content
   table
     thead
       tr
-        th(style='width: 64px')
+        th(style='width: 96px')
         th(style='width: 64px') ID
         th 問題名
         th 点数
@@ -21,7 +21,7 @@ block content
         - var problem = problems[id];
         tr
           td
-            img(src='/problems/#{problem.id}/cover.png', width='48', height='48')
+            img(src='/problems/#{problem.id}/cover.png', style='width: 48px; height: 48px')
           td= problem.id
           td
             a(href='/problems/#{problem.id}/')
