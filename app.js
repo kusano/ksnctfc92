@@ -184,11 +184,33 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/problems/(:id/)?', (req, res, next) => {
+  //  solved[problemId][flagId]に回答済みかどうかを持つ
+  req.solved = {};
+
+  if (req.loginUser == undefined) {
+    next();
+  } else {
+    db.all('select * from solved where user=?', req.loginUser.id, (err, rows) => {
+      if (err != null)
+        logger.warn('Failed to find solved', err, id);
+      else
+        for (var row of rows) {
+          if (!(row.problem in req.solved))
+            req.solved[row.problem] = {}
+          req.solved[row.problem][row.flag] = true;
+        }
+      next();
+    });
+  }
+});
+
 app.get('/problems/', (req, res) => {
   res.render('problems', {
     user: req.loginUser,
     csrfToken: req.csrfToken(),
     problems: problems,
+    solved: req.solved,
   });
 });
 
@@ -199,6 +221,7 @@ app.get('/problems/:id/', (req, res, next) => {
       csrfToken: req.csrfToken(),
       problem: problems[req.params.id],
       problems: problems,
+      solved: req.solved,
     });
   } else
     next();

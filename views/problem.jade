@@ -15,8 +15,19 @@ block content
           span.panel-icon: i.fa.fa-list
           | 一覧
         - for (var id in problems) {
+          - var comp = false;
+          - if (user != undefined) {
+          -   comp = true;
+          -   for (var f of problems[id].flags) {
+          -     if (!solved[id][f.id]) comp = false;
+          -   }
+          - }
           a.panel-block(class=(id==problem.id ? "is-active" : ""), href='../'+id+'/')
-            = id + ' - ' + problems[id].title
+            span= id + ' - ' + problems[id].title
+            - if (comp) {
+              span &nbsp;
+              span.icon.is-small.is-success: i.fa.fa-check
+            - }
         - }
     .column
       .card
@@ -28,6 +39,17 @@ block content
               img(src='cover.png', width='128', height='128')
             .column
               != problem.statement
+          .field
+            label.label 点数
+            - var sep = '';
+            - for (var flag of problem.flags) {
+              span= sep + flag.point
+              - sep = ' / ';
+              - if (solved[problem.id] && solved[problem.id][flag.id]) {
+                | &nbsp;
+                span.icon.is-small.is-success: i.fa.fa-check
+              - }
+            - }
           form#form
             input#problem(type="hidden", value="#{problem.id}")
             input#_csrf(type='hidden', value='#{csrfToken}')

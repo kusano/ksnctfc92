@@ -26,6 +26,15 @@ block content
           td
             a(href='/problems/#{problem.id}/')
               = problem.title
-          td= problem.flags.map(f => f.point).join(' / ')
+          td
+            - var sep = '';
+            - for (var flag of problem.flags) {
+              span= sep + flag.point
+              - sep = ' / ';
+              - if (solved[problem.id] && solved[problem.id][flag.id]) {
+                | &nbsp;
+                span.icon.is-small.is-success: i.fa.fa-check
+              - }
+            - }
           td
       - }
