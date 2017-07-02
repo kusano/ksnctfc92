@@ -16,8 +16,8 @@ block content
         th 点数
         th 更新日時
     tbody
-      tr
-        - for (var i=0; i<users.length; i++) {
+      - for (var i=0; i<users.length; i++) {
+        tr
           td.has-text-right= i+1
           td
             a(href='https://twitter.com/'+users[i].twitter_name)
@@ -25,4 +25,4 @@ block content
               = ' @' + users[i].twitter_name
           td.has-text-right= users[i].score
           td= users[i].score_updated
-        - }
+      - }
