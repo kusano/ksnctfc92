@@ -373,7 +373,7 @@ function formatDate(d) {
   return s.replace('T', ' ').replace('Z', '');
 }
 
-app.get('/ranking/', (req, res) => {
+app.get('/ranking', (req, res) => {
   db.all('select * from user where score>0 order by score desc, score_updated',
     (err, rows) => {
     var users = [];
@@ -391,7 +391,7 @@ app.get('/ranking/', (req, res) => {
   });
 });
 
-app.get('/log/', (req, res) => {
+app.get('/log', (req, res) => {
   db.all('select *, solved.created_at as created_at from solved, user where ' +
     'solved.user = user.id ' +
     'order by solved.created_at desc', (err, rows) => {
