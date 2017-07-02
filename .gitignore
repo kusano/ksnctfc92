@@ -1,5 +1,6 @@
 /node_modules/
 /config.json
 /database.db
+/sessions.db
 /public/stylesheets/*.css
 /public/stylesheets/*.map

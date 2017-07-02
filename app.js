@@ -15,6 +15,7 @@ var sqlite3 = require('sqlite3');
 var crypto = require('crypto');
 var sassMiddleware = require('node-sass-middleware');
 var csurf = require('csurf')
+var SQLiteStore = require('connect-sqlite3')(session);
 
 function generateRandom() {
   var n = 16;
@@ -150,9 +151,13 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
+  store: new SQLiteStore,
   secret: config.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 365*24*60*60*1000,
+  },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
