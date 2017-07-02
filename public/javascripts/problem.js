@@ -13,18 +13,22 @@ document.addEventListener('DOMContentLoaded', function() {
       xhr.open('POST', '/submit', true);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onreadystatechange = () => {
-        if (xhr.readyState==4 && xhr.status==200)
+        if (xhr.readyState==4)
         {
           submit.classList.remove('is-loading');
-          var result = JSON.parse(xhr.responseText);
-          for (var node of document.querySelectorAll('.correct, .wrong, .duplicate'))
-            node.style.display = 'none';
-          for (var node of document.querySelectorAll('.'+result.result))
-            node.style.display = '';
-          document.getElementById('point').innerText = result.point;
-          document.getElementById('flag_modal').innerText = flag;
-          lastResult = result.result;
-          modal.classList.add('is-active');
+          if (xhr.status != 200)
+            alert('error');
+          else {
+            var result = JSON.parse(xhr.responseText);
+            for (var node of document.querySelectorAll('.correct, .wrong, .duplicate'))
+              node.style.display = 'none';
+            for (var node of document.querySelectorAll('.'+result.result))
+              node.style.display = '';
+            document.getElementById('point').innerText = result.point;
+            document.getElementById('flag_modal').innerText = flag;
+            lastResult = result.result;
+            modal.classList.add('is-active');
+          }
         }
       };
       xhr.send(JSON.stringify({
