@@ -5,20 +5,22 @@ block title
 
 block hero
   h1.title ksnctf C92
-  h2.subtitle &nbsp;
+  h2.subtitle Welcome to ksnctf C92
 
 block content
-  h1= title
-  p Welcome to #{title}
+  p
+    | <a href="http://ksnctf.sweetduet.info/">ksnctf</a>のコミックマーケットC92向けスピンオフです。
+    | 主にITセキュリティーに関する問題を出題します。
+    | 各問題から<code>FLAG{????}</code>という形式のフラグを探してください。
+    | Twitterアカウントでログインすることで、ランキングに参加でき、さらに……。
+    | 解説本を<strong>金曜日 東地区“た”ブロック－26b「superflip」</strong>で頒布します。
 
-  - if (user != undefined) {
-    p Hi, @#{user.twitter_name}
-    p Your score is #{user.score}
-  - }
-
-  h2 Problems
+  h2 開催期間
+  p 2017年7月11日 ～ 2017年8月11日 10時00分（日本時間）
+  h2 注意事項
   ul
-    - for (var id in problems) {
-      li
-        a(href="/problems/#{id}/") #{id}: #{problems[id].title}
-    - }
+    li <strong>2017年8月11日 10時00分</strong>以前に解答を公開したり、他人に教えたりしないでください
+    li 各問題で指定されたサーバーとポート以外への攻撃は禁止です。このスコアサーバー自体への攻撃も禁止です
+    li このサーバーや問題サーバーに送信された全ての情報は、頒布する解説本で紹介する可能性があります（特に誤答例など）
+    li 問題サーバーに送信された全ての情報は他のユーザーが閲覧する可能性があります
+    li ログインに使用したTwitterアカウントのプロフィール画像を、CSSスプライトにしてこのサーバーから再配信するかもしれません
