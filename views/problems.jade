@@ -20,14 +20,19 @@ block content
       - for (var id in problems) {
         - var problem = problems[id];
         - var first = true;
+        - var flagnum = 0;
         - for (var flag of problem.flags) {
+        -   if (!flag.hidden || (user && user.hidden)) {
+        -     flagnum++; }}
+        - for (var flag of problem.flags) {
+          - if (flag.hidden && !(user && user.hidden)) continue;
           tr
             - if (first) {
               - first = false;
-              td(rowspan=problem.flags.length)
+              td(rowspan=flagnum)
                 img(src='/problems/#{problem.id}/cover.png', style='width: 48px; height: 48px')
-              td(rowspan=problem.flags.length)= problem.id
-              td(rowspan=problem.flags.length)
+              td(rowspan=flagnum)= problem.id
+              td(rowspan=flagnum)
                 a(href='/problems/#{problem.id}/')
                   = problem.title
             - }
