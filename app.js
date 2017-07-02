@@ -315,16 +315,20 @@ app.post('/submit', (req, res) => {
 
     var problem = problems[problemId];
     var flagId = '';
+    var hidden = false;
     for (var i=0; i<problem.flags.length; i++)
       for (var j=0; j<problem.flags[i].flags.length; j++)
         if (problem.flags[i].flags[j]==flag) {
           flagId = problem.flags[i].id;
           point = problem.flags[i].point;
+          hidden = problem.flags[i].hidden;
         }
     var result = '';
 
     if (flagId=='')
       sendResult('wrong', 0);
+    else if (hidden && !(user && user.hidden))
+      sendResult('hidden', 0);
     else if (user==undefined)
       sendResult('correct', point);
     else {

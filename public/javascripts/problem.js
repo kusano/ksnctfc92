@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('error');
           else {
             var result = JSON.parse(xhr.responseText);
-            for (var node of document.querySelectorAll('.correct, .wrong, .duplicate'))
+            for (var node of document.querySelectorAll('.correct, .wrong, .duplicate, .hidden'))
               node.style.display = 'none';
             for (var node of document.querySelectorAll('.'+result.result))
               node.style.display = '';

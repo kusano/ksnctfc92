@@ -81,6 +81,9 @@ block content
         .duplicate.modal-card-title
           span.icon.is-success: i.fa.fa-check
           | 正解
+        .hidden.modal-card-title
+          span.icon.is-warning: i.fa.fa-question
+          | ？？？？
       section.modal-card-body
         .columns
           .column.is-narrow
@@ -91,6 +94,7 @@ block content
               | ポイントを獲得しました
             p.wrong 不正解です
             p.duplicate すでにポイントを獲得済みのフラグです
+            p.hidden このフラグは今は投稿できません
             p
               code#flag_modal
       footer.modal-card-foot
