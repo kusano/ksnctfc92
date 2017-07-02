@@ -1,0 +1,25 @@
+extends layout
+
+block title
+  title ksnctf C92 - ログ
+
+block hero
+  h1.title ログ
+  h2.subtitle 全ユーザーのフラグ獲得状況です
+
+block content
+  table
+    thead
+      tr
+        th 日時
+        th 名前
+        th 問題
+        th 点数
+    tbody
+      - for (var s of solved) {
+        tr
+          td= s.created_at
+          td= '@' + s.twitter_name
+          td= s.problem
+          td.has-text-right= '+' + s.point
+      - }

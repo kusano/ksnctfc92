@@ -326,6 +326,31 @@ app.get('/ranking/', (req, res) => {
   });
 });
 
+app.get('/log/', (req, res) => {
+  db.all('select *, solved.created_at as created_at from solved, user where ' +
+    'solved.user = user.id ' +
+    'order by solved.created_at desc', (err, rows) => {
+    var solved = [];
+    if (err != null)
+      logger.warn('Failed to get log', err);
+    else
+      solved = rows;
+    for (var s of solved) {
+      s.point = 0;
+      for (var f of problems[s.problem].flags)
+        if (f.id == s.flag)
+          s.point = f.point;
+      s.problem = s.problem + ' - ' + problems[s.problem].title;
+      s.created_at = formatDate(s.created_at);
+    }
+    res.render('log', {
+      user: req.loginUser,
+      csrfToken: req.csrfToken(),
+      solved: solved,
+    });
+  });
+});
+
 //  Twitterログイン
 app.post('/login',
   passport.authenticate('twitter'));
