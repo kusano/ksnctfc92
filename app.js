@@ -86,11 +86,11 @@ var db = new sqlite3.Database('database.db', sqlite3.OPEN_READWRITE, e => {
 function updateScore(user, callback)
 {
   db.run('update user set ' +
-    'score = (select sum(point) from problem, solved where ' +
+    'score = (select ifnull(sum(point), 0) from problem, solved where ' +
       'solved.user = ? and ' +
       'problem.problem = solved.problem and ' +
       'problem.flag = solved.flag), '+
-    'score_updated = (select max(created_at) from solved where user = ?) ' +
+    'score_updated = (select ifnull(max(created_at), 0) from solved where user = ?) ' +
     'where id = ?',
     user, user, user, callback);
 }
@@ -353,7 +353,8 @@ function formatDate(d) {
 }
 
 app.get('/ranking/', (req, res) => {
-  db.all('select * from user order by score desc, score_updated', (err, rows) => {
+  db.all('select * from user where score>0 order by score desc, score_updated',
+    (err, rows) => {
     var users = [];
     if (err != null)
       logger.warn('Failed to get ranking', err);
