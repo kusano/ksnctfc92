@@ -197,7 +197,8 @@ app.get('/problems/:id/', (req, res, next) => {
     res.render('problem', {
       user: req.loginUser,
       csrfToken: req.csrfToken(),
-      problem: problems[req.params.id]
+      problem: problems[req.params.id],
+      problems: problems,
     });
   } else
     next();

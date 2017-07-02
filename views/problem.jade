@@ -8,25 +8,36 @@ block hero
   h2.subtitle 各問題から<code>FLAG{????}</code>という形式のフラグを探してください
 
 block content
-  .card
-    .card-header
-      p.card-header-title= problem.title
-    .card-content
-      .columns
-        .column.is-narrow
-          img(src='cover.png', width='128', height='128')
-        .column
-          != problem.statement
-      form#form
-        input#problem(type="hidden", value="#{problem.id}")
-        input#_csrf(type='hidden', value='#{csrfToken}')
-        .field
-          label.label(for='flag') フラグ
-          .control.has-icons-left
-            span.icon.is-left
-              i.fa.fa-flag
-            input.input#flag
-        .field
-          .control
-            button.button.is-primary(type='submit') 投稿
+  .columns
+    .column.is-narrow
+      nav.panel
+        a.panel-block(href='../')
+          span.panel-icon: i.fa.fa-list
+          | 一覧
+        - for (var id in problems) {
+          a.panel-block(class=(id==problem.id ? "is-active" : ""), href='../'+id+'/')
+            = id + ' - ' + problems[id].title
+        - }
+    .column
+      .card
+        .card-header
+          p.card-header-title= problem.title
+        .card-content
+          .columns
+            .column.is-narrow
+              img(src='cover.png', width='128', height='128')
+            .column
+              != problem.statement
+          form#form
+            input#problem(type="hidden", value="#{problem.id}")
+            input#_csrf(type='hidden', value='#{csrfToken}')
+            .field
+              label.label(for='flag') フラグ
+              .control.has-icons-left
+                span.icon.is-left
+                  i.fa.fa-flag
+                input.input#flag
+            .field
+              .control
+                button.button.is-primary(type='submit') 投稿
   script(src='/javascripts/problem.js')
