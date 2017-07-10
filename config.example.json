@@ -1,0 +1,7 @@
+{
+  "URL": "http://localhost:3000",
+  "SESSION_SECRET": ["yA9qaaEQzsBQOY0F"],
+  "TWITTER_CONSUMER_KEY": "",
+  "TWITTER_CONSUMER_SECRET": "",
+  "PROBLEMS": "./problems/"
+}
