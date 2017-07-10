@@ -78,7 +78,7 @@ catch (e)
 }
 
 //  db
-var db = new sqlite3.Database('database.db', sqlite3.OPEN_READWRITE, e => {
+var db = new sqlite3.Database(path.join(__dirname, 'database.db'), sqlite3.OPEN_READWRITE, e => {
   if (e === null)
     logger.info("Database opend");
   else
