@@ -60,6 +60,7 @@ try
     var problem = JSON.parse(fs.readFileSync(problemDir+id+'/problem.json'));
     problem.id = id;
     problem.statement = problem.statement.join('');
+    problem.statement_hidden = problem.statement_hidden.join('');
     problems[id] = problem;
 
     for (var flag of problem.flags)
