@@ -48,7 +48,7 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 //  problem
-var problemDir = './problems/';
+var problemDir = config.PROBLEMS;
 var problems = {};
 var scoreThreshold = 0;   //  隠しフラグ以外を全て取ったときのスコア
 try
