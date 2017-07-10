@@ -158,7 +158,7 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  store: new SQLiteStore,
+  store: new SQLiteStore({dir: __dirname}),
   secret: config.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
