@@ -1,5 +1,6 @@
 {
     "title": "Problem B",
+    "genres": ["Crypto"],
     "statement": [
         "FLAG_B_{md5(<a href=\"hoge.txt\">hoge.txt</a>)}"
     ],

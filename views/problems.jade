@@ -35,6 +35,9 @@ block content
               td(rowspan=flagnum)
                 a(href='/problems/#{problem.id}/')
                   = problem.title
+                each genre in problem.genres
+                  | &nbsp;
+                  span.tag.is-light= genre
             - }
             td.has-text-right
               span(class=flag.hidden ? 'hidden' : '')= flag.point

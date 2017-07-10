@@ -33,7 +33,8 @@ block content
     .column
       .card
         .card-header
-          p.card-header-title= problem.title
+          p.card-header-title
+            = problem.title
         .card-content
           .columns
             .column.is-narrow
@@ -43,6 +44,7 @@ block content
               - if (user && user.hidden) {
                 p.hidden!= problem.statement_hidden
               - }
+
           .field
             label.label 点数
             - var sep = '';
@@ -56,6 +58,11 @@ block content
                 span.icon.is-small.is-success: i.fa.fa-check
               - }
             - }
+          .field
+            label.label ジャンル
+            each genre in problem.genres
+              | &nbsp;
+              span.tag.is-light= genre
           form#form
             input#problem(type="hidden", value="#{problem.id}")
             input#_csrf(type='hidden', value='#{csrfToken}')
