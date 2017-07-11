@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "body-parser": "~1.17.1",
-    "bulma": "^0.4.2",
+    "bulma": "^0.4.3",
     "connect-sqlite3": "^0.9.9",
     "cookie-parser": "~1.4.3",
     "csurf": "^1.9.0",
