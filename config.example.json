@@ -3,5 +3,6 @@
   "SESSION_SECRET": ["yA9qaaEQzsBQOY0F"],
   "TWITTER_CONSUMER_KEY": "",
   "TWITTER_CONSUMER_SECRET": "",
-  "PROBLEMS": "./problems/"
+  "PROBLEMS": "./problems/",
+  "HIDDEN_KEY": "3idr12qg21vkhdcm"
 }

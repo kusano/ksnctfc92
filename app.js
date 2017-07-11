@@ -417,8 +417,15 @@ app.get('/log', (req, res) => {
   });
 });
 
+app.get('/hidden', (req, res) => {
+  res.render('hidden', {
+    csrfToken: req.csrfToken(),
+  });
+});
+
 app.post('/hidden', (req, res) => {
-  if (req.loginUser.enableHidden)
+  if (req.loginUser.enableHidden ||
+      req.body.key && req.body.key == config.HIDDEN_KEY)
     req.session.hidden = !req.session.hidden;
   res.redirect('/');
 });
