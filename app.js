@@ -370,7 +370,7 @@ app.post('/submit', (req, res) => {
 });
 
 function formatDate(d) {
-  var s = new Date(d*1000).toISOString();
+  var s = new Date((d+9*60*60)*1000).toISOString();
   return s.replace('T', ' ').replace('Z', '');
 }
 
