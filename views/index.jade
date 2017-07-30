@@ -11,20 +11,24 @@ block content
   .columns
     .column
       p
-      | <a href="http://ksnctf.sweetduet.info/">ksnctf</a>のコミックマーケットC92向けスピンオフです。
-      | 主にITセキュリティーに関する問題を出題します。
-      | 各問題から<code>FLAG{????}</code>という形式のフラグを探してください。
-      | Twitterアカウントでログインすることで、ランキングに参加でき、さらに……。
-      | 解説本を<strong>金曜日 東地区“た”ブロック－26b「superflip」</strong>で頒布します。
+        | <a href="http://ksnctf.sweetduet.info/">ksnctf</a>のコミックマーケットC92向けスピンオフです。
+        | 主にITセキュリティーに関する問題を出題します。
+        | 各問題から<code>FLAG{????}</code>という形式のフラグを探してください。
+        | Twitterアカウントでログインすることで、ランキングに参加でき、さらに……。
+      p
+        | 解説本を<strong>金曜日 東地区“た”ブロック－26b「superflip」</strong>で頒布します。
+        | 詳細は下記のページに掲載しています。
+      p
+        a(href="http://sanya.sweetduet.info/ksnctfc92/") http://sanya.sweetduet.info/ksnctfc92/
     .column.is-3
       figure.image(style='border: 2px solid #f8f8fa; box-shadow: 1px 2px 2px #889')
-        - if (user && user.hidden) {
+        if user && user.hidden
           img(src='/images/bigsight_hidden.jpg', style='display: block')
-        - } else {
+        else
           img(src='/images/bigsight.jpg', style='display: block')
-        - }
   h2 開催期間
   p 2017年7月11日 ～ 2017年8月11日 10時00分（日本時間）
+  p コンテスト終了後は問題に正解しても点数を獲得できなくなります。本サイトは2017年9月末に閉鎖予定です。
   h2 注意事項
   ul
     li <strong>2017年8月11日 10時00分</strong>以前に解答を公開したり、他人に教えたりしないでください
