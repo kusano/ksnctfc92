@@ -29,6 +29,14 @@ function generateRandom() {
   return random.toString('base64');
 }
 
+function isEnded(time) {
+  if (time==undefined)
+    return new Date() >= new Date(config.END_TIME);
+  else {
+    return new Date(time*1000) >= new Date(config.END_TIME);
+  }
+}
+
 //  passport
 passport.use(new Strategy({
     consumerKey: config.TWITTER_CONSUMER_KEY,
@@ -91,14 +99,16 @@ var db = new sqlite3.Database(path.join(__dirname, 'database.db'), sqlite3.OPEN_
 //  スコアの更新
 function updateScore(user, callback)
 {
+  var endTime = new Date(config.END_TIME) / 1000;
   db.run('update user set ' +
     'score = (select ifnull(sum(point), 0) from problem, solved where ' +
       'solved.user = ? and ' +
+      'solved.created_at < ? and ' +
       'problem.problem = solved.problem and ' +
       'problem.flag = solved.flag), '+
-    'score_updated = (select ifnull(max(created_at), 0) from solved where user = ?) ' +
+    'score_updated = (select ifnull(max(created_at), 0) from solved where user = ? and created_at < ?) ' +
     'where id = ?',
-    user, user, user, callback);
+    user, endTime, user, endTime, user, callback);
 }
 
 db.serialize(() => {
@@ -200,6 +210,7 @@ app.get('/', (req, res) => {
   res.render('index', {
     user: req.loginUser,
     csrfToken: req.csrfToken(),
+    isEnded: isEnded(),
   });
 });
 
@@ -216,8 +227,8 @@ app.get('/problems/(:id/)?', (req, res, next) => {
       else
         for (var row of rows) {
           if (!(row.problem in req.solved))
-            req.solved[row.problem] = {}
-          req.solved[row.problem][row.flag] = true;
+            req.solved[row.problem] = {};
+          req.solved[row.problem][row.flag] = {isEnded: isEnded(row.created_at)};
         }
       next();
     });
@@ -332,7 +343,7 @@ app.post('/submit', (req, res) => {
     else if (hidden && !(user && user.hidden))
       sendResult('hidden', 0);
     else if (user==undefined)
-      sendResult('correct', point);
+      sendResult(isEnded() ? 'ended' : 'correct', point);
     else {
       db.get('select 1 from solved where user=? and problem=? and flag=?',
         user.id, problemId, flagId,
@@ -358,8 +369,7 @@ app.post('/submit', (req, res) => {
                       res.status(500).send();
                     } else {
                       logger.info('Score updated', userName, problemId, flagId);
-                      console.log(problem.flags, flagId);
-                      sendResult('correct', point);
+                      sendResult(isEnded() ? 'ended' : 'correct', point);
                     }
                   });
                 }

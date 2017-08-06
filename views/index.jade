@@ -28,6 +28,12 @@ block content
           img(src='/images/bigsight.jpg', style='display: block')
   h2 開催期間
   p 2017年7月11日 ～ 2017年8月11日 10時00分（日本時間）
+  p
+    strong
+      if isEnded
+        | コンテストは終了しました。
+      else
+        | コンテスト開催中です。
   p コンテスト終了後は問題に正解しても点数を獲得できなくなります。本サイトは2017年9月末に閉鎖予定です。
   h2 注意事項
   ul

@@ -53,10 +53,12 @@ block content
               span= sep
               span(class=flag.hidden ? 'hidden' : '')= flag.point
               - sep = ' / ';
-              - if (solved[problem.id] && solved[problem.id][flag.id]) {
+              if solved[problem.id] && solved[problem.id][flag.id]
                 | &nbsp;
-                span.icon.is-small.is-success: i.fa.fa-check
-              - }
+                if solved[problem.id][flag.id].isEnded
+                  span.icon.is-small.is-info: i.fa.fa-circle
+                else
+                  span.icon.is-small.is-success: i.fa.fa-check
             - }
           .field
             label.label ジャンル
@@ -91,6 +93,9 @@ block content
         .hidden.modal-card-title
           span.icon.is-warning: i.fa.fa-question
           | ？？？？
+        .ended.modal-card-title
+          span.icon.is-info: i.fa.fa-circle
+          | 正解
       section.modal-card-body
         .columns
           .column.is-narrow
@@ -102,6 +107,7 @@ block content
             p.wrong 不正解です
             p.duplicate すでにポイントを獲得済みのフラグです
             p.hidden このフラグは今は投稿できません
+            p.ended コンテストは終了しているため点数は獲得できません
             p
               code#flag_modal
       footer.modal-card-foot

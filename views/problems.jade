@@ -42,8 +42,16 @@ block content
             td.has-text-right
               span(class=flag.hidden ? 'hidden' : '')= flag.point
               | &nbsp;
-              span.icon.is-small.is-success
-                i.fa(class=solved[problem.id] && solved[problem.id][flag.id] ? 'fa-check' : '')
+              if (solved[problem.id] && solved[problem.id][flag.id])
+                if solved[problem.id][flag.id].isEnded
+                  span.icon.is-small.is-info
+                    i.fa(class='fa-circle')
+                else
+                  span.icon.is-small.is-success
+                    i.fa(class='fa-check')
+              else
+                span.icon.is-small.is-success
+                  i.fa
             td
               - var solv = solver[problem.id] && solver[problem.id][flag.id] || [];
               - var num = number[problem.id] && number[problem.id][flag.id] || 0;

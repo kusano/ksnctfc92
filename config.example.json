@@ -4,5 +4,6 @@
   "TWITTER_CONSUMER_KEY": "",
   "TWITTER_CONSUMER_SECRET": "",
   "PROBLEMS": "./problems/",
-  "HIDDEN_KEY": "nLlUQyi67F43t6Oc"
+  "HIDDEN_KEY": "nLlUQyi67F43t6Oc",
+  "END_TIME": "2017-08-11T10:00:00+09:00"
 }
