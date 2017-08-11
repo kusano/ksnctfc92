@@ -2,11 +2,10 @@ doctype html
 html
   head
     block title
-    - if (user && user.hidden) {
+    if user && user.hidden
       link(rel='stylesheet', href='/stylesheets/style_hidden.css')
-    - } else {
+    else
       link(rel='stylesheet', href='/stylesheets/style.css')
-    - }
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
     link(

@@ -58,7 +58,7 @@ passport.deserializeUser(function(obj, cb) {
 //  problem
 var problemDir = config.PROBLEMS;
 var problems = {};
-var scoreThreshold = 0;   //  隠しフラグ以外を全て取ったときのスコア
+var openFlagNumber = 0;   //  隠しではないフラグの個数
 try
 {
   var index = JSON.parse(fs.readFileSync(problemDir+'index.json'));
@@ -73,7 +73,7 @@ try
 
     for (var flag of problem.flags)
       if (!flag.hidden)
-        scoreThreshold += flag.point;
+        openFlagNumber++;
   }
   logger.info('Loaded problems');
   for (var id in problems)
@@ -194,13 +194,19 @@ function getUser(req, res, next)
         logger.warn('Invalid user id', id);
       else {
         req.loginUser = row;
-        req.loginUser.enableHidden = req.loginUser.score >= scoreThreshold;
-        if (req.session.hidden == undefined)
-          req.loginUser.hidden = req.loginUser.enableHidden;
-        else
-          req.loginUser.hidden = req.session.hidden
+        db.get('select count(*) as number from solved where user = ?', id, (err, row) => {
+          if (err != null)
+            logger.warn('Failed to get solved number', err, id);
+          else {
+            req.loginUser.enableHidden = row.number >= openFlagNumber;
+            if (req.session.hidden == undefined)
+              req.loginUser.hidden = req.loginUser.enableHidden;
+            else
+              req.loginUser.hidden = req.session.hidden;
+          }
+          next();
+        });
       }
-      next();
     });
 }
 app.get('*', getUser);
