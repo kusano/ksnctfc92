@@ -4,7 +4,7 @@ https://ksnctfc92.sweetduet.info で動かしていたスコアサーバー。
 
 ```
 # config.example.jsonをconfig.jsonにコピーし設定を書き換える
-sqlite3 aaa.db < database.sql
+sqlite3 database.db < database.sql
 npm install
 npm start
 ```
