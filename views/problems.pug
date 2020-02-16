@@ -30,10 +30,10 @@ block content
             - if (first) {
               - first = false;
               td(rowspan=flagnum)
-                img(src='/problems/#{problem.id}/cover.png', style='width: 48px; height: 48px')
+                img(src=`/problems/${problem.id}/cover.png`, style='width: 48px; height: 48px')
               td(rowspan=flagnum)= problem.id
               td(rowspan=flagnum)
-                a(href='/problems/#{problem.id}/')
+                a(href=`/problems/${problem.id}/`)
                   = problem.title
                 each genre in problem.genres
                   | &nbsp;

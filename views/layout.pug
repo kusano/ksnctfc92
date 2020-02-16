@@ -35,10 +35,10 @@ html
                 button.button(type='submit', style='color: #55acee')
                   span.icon: i.fa.fa-twitter
                   span ログイン
-                input(type='hidden', name='_csrf', value='#{csrfToken}')
+                input(type='hidden', name='_csrf', value=`${csrfToken}`)
           - } else {
             .nav-item
-              a(href='#{"https://twitter.com/"+user.twitter_name}', title='#{"@"+user.twitter_name}')
+              a(href=`${"https://twitter.com/"+user.twitter_name}`, title=`${"@"+user.twitter_name}`)
                 img.image(src=user.twitter_icon)
               | &nbsp;
               strong= user.score + " pt"
@@ -47,13 +47,13 @@ html
                 form(method='post', action='/hidden')
                   button.button(type='submit', title='隠しフラグの表示を切り替える')
                     span.icon: i.fa.fa-question
-                  input(type='hidden', name='_csrf', value='#{csrfToken}')
+                  input(type='hidden', name='_csrf', value=`${csrfToken}`)
             - }
             .nav-item
               form(method='post', action='/logout')
                 button.button(type='submit', title='ログアウト')
                   span.icon: i.fa.fa-sign-out
-                input(type='hidden', name='_csrf', value='#{csrfToken}')
+                input(type='hidden', name='_csrf', value=`${csrfToken}`)
           - }
     section.hero.is-primary
       .hero-body
