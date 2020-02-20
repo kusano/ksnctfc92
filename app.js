@@ -228,9 +228,8 @@ function getUser(req, res, next)
           else {
             req.loginUser.enableHidden = row.number >= openFlagNumber;
             if (req.session.hidden == undefined)
-              req.loginUser.hidden = req.loginUser.enableHidden;
-            else
-              req.loginUser.hidden = req.session.hidden;
+              req.session.hidden = req.loginUser.enableHidden;
+            req.loginUser.hidden = req.session.hidden;
           }
           next();
         });
