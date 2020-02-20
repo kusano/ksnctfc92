@@ -20,9 +20,14 @@ block content
         tr
           td.has-text-right= i+1
           td
-            a(href='https://twitter.com/'+users[i].twitter_name)
+            - if (users[i].twitter_name=='!guest') {
               img(src=users[i].twitter_icon, style='width: 32px; height: 32px')
-              = ' @' + users[i].twitter_name
+              = ' Guest'
+            - } else {
+              a(href='https://twitter.com/'+users[i].twitter_name)
+                img(src=users[i].twitter_icon, style='width: 32px; height: 32px')
+                = ' @' + users[i].twitter_name
+            - }
           td.has-text-right= users[i].score
           td= users[i].score_updated
       - }

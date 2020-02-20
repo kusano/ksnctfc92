@@ -19,7 +19,7 @@ block content
       - for (var s of solved) {
         tr
           td= s.created_at
-          td= '@' + s.twitter_name
+          td= s.twitter_name=='!guest' ? 'Guest' : '@' + s.twitter_name
           td= s.problem
           td.has-text-right= '+' + s.point
       - }

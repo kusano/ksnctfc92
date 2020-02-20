@@ -66,8 +66,8 @@ block content
               | &nbsp;
               span.tag.is-light= genre
           form#form
-            input#problem(type='hidden', value=`#{problem.id}`)
-            input#_csrf(type='hidden', value=`#{csrfToken}`)
+            input#problem(type='hidden', value=`${problem.id}`)
+            input#_csrf(type='hidden', value=`${csrfToken}`)
             .field
               label.label(for='flag') フラグ
               .control.has-icons-left

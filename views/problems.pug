@@ -56,8 +56,12 @@ block content
               - var solv = solver[problem.id] && solver[problem.id][flag.id] || [];
               - var num = number[problem.id] && number[problem.id][flag.id] || 0;
               - for (var s of solv) {
-                a(href='https://twitter.com/'+s.twitter_name, title='@'+s.twitter_name)
+                - if (s.twitter_name=='!guest') {
                   img(src=s.twitter_icon, style='width: 32px; height: 32px')
+                - } else {
+                  a(href='https://twitter.com/'+s.twitter_name, title='@'+s.twitter_name)
+                    img(src=s.twitter_icon, style='width: 32px; height: 32px')
+                - }
               - }
               - if (solv.length < num) {
                 span= ' +'+(num-solv.length)

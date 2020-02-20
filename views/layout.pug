@@ -38,8 +38,12 @@ html
                 input(type='hidden', name='_csrf', value=`${csrfToken}`)
           - } else {
             .navbar-item
-              a(href=`${"https://twitter.com/"+user.twitter_name}`, title=`${"@"+user.twitter_name}`)
+              - if (user.twitter_name=='!guest') {
                 img.image(src=user.twitter_icon)
+              - } else {
+                a(href=`${"https://twitter.com/"+user.twitter_name}`, title=`${"@"+user.twitter_name}`)
+                  img.image(src=user.twitter_icon)
+              - }
               | &nbsp;
               strong= user.score + " pt"
             - if (user.enableHidden) {
@@ -49,11 +53,13 @@ html
                     span.icon: i.fa.fa-question
                   input(type='hidden', name='_csrf', value=`${csrfToken}`)
             - }
-            .navbar-item
-              form(method='post', action='/logout')
-                button.button(type='submit', title='ログアウト')
-                  span.icon: i.fa.fa-sign-out
-                input(type='hidden', name='_csrf', value=`${csrfToken}`)
+            - if (user.twitter_name!='!guest') {
+              .navbar-item
+                form(method='post', action='/logout')
+                  button.button(type='submit', title='ログアウト')
+                    span.icon: i.fa.fa-sign-out
+                  input(type='hidden', name='_csrf', value=`${csrfToken}`)
+            - }
           - }
     section.hero.is-primary
       .hero-body

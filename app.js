@@ -30,11 +30,13 @@ function generateRandom() {
 }
 
 function isEnded(time) {
+  if (config.SINGLE_USER)
+    return false;
+
   if (time==undefined)
     return new Date() >= new Date(config.END_TIME);
-  else {
+  else
     return new Date(time*1000) >= new Date(config.END_TIME);
-  }
 }
 
 //  passport
@@ -99,7 +101,7 @@ var db = new sqlite3.Database(path.join(__dirname, 'database.db'), sqlite3.OPEN_
 //  スコアの更新
 function updateScore(user, callback)
 {
-  var endTime = new Date(config.END_TIME) / 1000;
+  var endTime = config.SINGLE_USER ? 999999999999 : new Date(config.END_TIME) / 1000;
   db.run('update user set ' +
     'score = (select ifnull(sum(point), 0) from problem, solved where ' +
       'solved.user = ? and ' +
@@ -146,6 +148,29 @@ db.serialize(() => {
     });
   });
   logger.info('Score udpated');
+
+  //  ゲストユーザーの追加
+  if (config.SINGLE_USER) {
+    db.get("select id from user where twitter_name='!guest'", (err, row) => {
+      if (err != null) {
+        logger.fatal('Failed to find user', err);
+        process.exit(0);
+      } else {
+        if (row == undefined) {
+          var current = Date.now()/1000;
+          db.run('insert into user values(?,?,?,?,?,?,?,?,?)',
+            'guest', 0, '!guest', '/images/guest.png', null, 0, current, current, current,
+            err => {
+              if (err != null) {
+                logger.fatal('Failed to add guest user', err);
+                process.exit(0);
+              } else
+                logger.info('Created guest user');
+            });
+        }
+      }
+    });
+  }
 });
 
 var app = express();
@@ -183,6 +208,9 @@ app.use(csurf());
 
 function getUser(req, res, next)
 {
+  if (config.SINGLE_USER)
+    req.session.userId = 'guest';
+
   var id = req.session.userId;
   if (id == undefined)
     next();
