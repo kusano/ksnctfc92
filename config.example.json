@@ -6,5 +6,6 @@
   "PROBLEMS": "./problems/",
   "HIDDEN_KEY": "nLlUQyi67F43t6Oc",
   "END_TIME": "2017-08-11T10:00:00+09:00",
-  "SINGLE_USER": true
+  "SINGLE_USER": true,
+  "DATABASE_PATH": ""
 }
