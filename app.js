@@ -40,14 +40,16 @@ function isEnded(time) {
 }
 
 //  passport
-passport.use(new Strategy({
-    consumerKey: config.TWITTER_CONSUMER_KEY,
-    consumerSecret: config.TWITTER_CONSUMER_SECRET,
-    callbackURL: config.URL + '/callback',
-  },
-  function (token, tokenSecret, profile, cb) {
-    cb(null, profile);
-  }));
+if (!config.SINGLE_USER) {
+  passport.use(new Strategy({
+      consumerKey: config.TWITTER_CONSUMER_KEY,
+      consumerSecret: config.TWITTER_CONSUMER_SECRET,
+      callbackURL: config.URL + '/callback',
+    },
+    function (token, tokenSecret, profile, cb) {
+      cb(null, profile);
+    }));
+}
 
 passport.serializeUser(function(user, cb) {
   cb(null, user);
